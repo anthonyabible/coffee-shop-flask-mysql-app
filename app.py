@@ -1,14 +1,18 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
-app.secret_key = "devkey"
 
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 3309
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'coffee123'  # or blank if your container allows it
-app.config['MYSQL_DB'] = 'campuscoffee'
+# Environment-based configuration
+# These fallback values are for local demo/development use only.
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-secret-key")
+
+app.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST", "127.0.0.1")
+app.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT", 3309))
+app.config["MYSQL_USER"] = os.environ.get("MYSQL_USER", "your_mysql_username")
+app.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD", "your_mysql_password")
+app.config["MYSQL_DB"] = os.environ.get("MYSQL_DB", "campuscoffee")
 
 mysql = MySQL(app)
 
