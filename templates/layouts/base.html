@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" style="background: rgb(226,207,196);">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Mill Mountain Coffee{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Footer-Clean-icons.css') }}">
+
+    <style>
+        .nav-text-big {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: black !important;
+        }
+        .navbar {
+            border-bottom: 2px solid #c4ac9d;
+        }
+        .dropdown-item {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body style="background: rgb(226,207,196);">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg" style="background: rgb(226,207,196);">
+        <div class="container-fluid">
+
+            <!-- LOGO + BRAND TEXT -->
+            <a class="navbar-brand nav-text-big d-flex align-items-center" href="{{ url_for('menu') }}">
+                <img src="{{ url_for('static', filename='img/5684d944effe5e64feb861166c6b4360.webp') }}"
+                     width="94" height="85" class="me-3">
+                Mill Mountain Coffee
+            </a>
+
+            <!-- TOGGLER -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ms-auto align-items-center">
+
+                    <!-- MENU LINK -->
+                    <li class="nav-item px-3">
+                        <a class="nav-link nav-text-big" href="{{ url_for('menu') }}">Menu</a>
+                    </li>
+
+                    <!-- ORDERS -->
+                    <li class="nav-item px-3">
+                        <a class="nav-link nav-text-big" href="{{ url_for('myorders') }}">My Orders</a>
+                    </li>
+
+                    <!-- CHECKOUT -->
+                    <li class="nav-item px-3">
+                        <a class="nav-link nav-text-big" href="{{ url_for('checkout') }}">Checkout</a>
+                    </li>
+
+                    <!-- INVENTORY DROPDOWN -->
+                    <li class="nav-item dropdown px-3">
+                        <a class="nav-link dropdown-toggle nav-text-big" href="#" data-bs-toggle="dropdown">
+                            Inventory
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-light">
+                            <li><a class="dropdown-item" href="/inventory-list.html">Inventory List</a></li>
+                            <li><a class="dropdown-item" href="/add-product.html">Add Product</a></li>
+                            <li><a class="dropdown-item" href="/inventory-analytics.html">Inventory Analytics</a></li>
+                            <li><a class="dropdown-item" href="/ai-inventory.html">AI Inventory Assistant</a></li>
+                            <li><a class="dropdown-item" href="/ordersearch">Order Search</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- USER AUTH AREA (DYNAMIC) -->
+                    {% if session.get('user_email') %}
+
+                        <!-- Greeting -->
+                        <li class="nav-item px-3">
+                            <span class="nav-link nav-text-big">Hello, {{ session['user_name'] }}</span>
+                        </li>
+
+                        <!-- Profile -->
+                        <li class="nav-item px-3">
+                            <a class="nav-link nav-text-big" href="{{ url_for('profile') }}">Profile</a>
+                        </li>
+
+                        <!-- ADMIN ONLY -->
+                        {% if session.get('user_role') == 'admin' %}
+                        <li class="nav-item dropdown px-3">
+                            <a class="nav-link dropdown-toggle nav-text-big" href="#" data-bs-toggle="dropdown">
+                                Admin Panel
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light">
+                                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('admin_users_analytics') }}">User Analytics</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        <!-- Logout -->
+                        <li class="nav-item px-3">
+                            <a class="nav-link nav-text-big" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+
+                    {% else %}
+
+                        <!-- Login -->
+                        <li class="nav-item px-3">
+                            <a class="nav-link nav-text-big" href="{{ url_for('login') }}">Login</a>
+                        </li>
+
+                        <!-- Signup -->
+                        <li class="nav-item px-3">
+                            <a class="nav-link nav-text-big" href="{{ url_for('signup') }}">Sign Up</a>
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN PAGE CONTENT -->
+    {% block content %}{% endblock %}
+
+    <!-- FOOTER -->
+    <footer class="text-center py-4" style="background: rgb(226,207,196);">
+        <div class="container">
+            <p class="text-body">© 2025 Mill Mountain Coffee & Tea</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+
+</body>
+</html>

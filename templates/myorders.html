@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<main class="container py-4">
+
+    <h1 class="mb-4">My Orders</h1>
+
+    <!-- SEARCH BAR -->
+    <form method="GET" action="{{ url_for('myorders') }}" class="d-flex mb-3">
+        <input class="form-control me-2"
+               type="text"
+               name="search_oid"
+               placeholder="Search by Order ID..."
+               value="{{ request.args.get('search_oid', '') }}">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+
+    <!-- ORDERS TABLE -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            {% if orders %}
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total ($)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td>{{ o.OID }}</td>
+                            <td>{{ o.OrderDate }}</td>
+                            <td>{{ o.TotalQuantity }}</td>
+                            <td>${{ o.TotalAmount }}</td>
+                            <td>{{ o.OrderStatus }}</td>
+                            <td>
+                                <!-- VIEW ORDER -->
+                                <a class="btn btn-outline-primary btn-sm"
+                                   href="{{ url_for('edit_order', oid=o.OID) }}">
+                                   View
+                                </a>
+
+                                <!-- CANCEL ORDER -->
+                                <a class="btn btn-outline-danger btn-sm ms-2"
+                                   href="{{ url_for('cancel_order', oid=o.OID) }}">
+                                   Cancel
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-warning mt-3">No orders found.</div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</main>
+{% endblock %}

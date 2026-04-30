@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% block title %}AI Inventory Assistant{% endblock %}
+
+{% block content %}
+<main class="container py-4">
+
+    <h2 class="fw-bold mb-3">AI Inventory Assistant</h2>
+
+    <form method="POST" class="mb-4">
+        <textarea name="message" class="form-control" rows="3"
+                  placeholder="Ask about inventory..."></textarea>
+        <button class="btn btn-dark mt-2">Ask</button>
+    </form>
+
+    {% if response %}
+    <div class="card shadow-sm p-3">
+        <h5 class="fw-bold">AI Response</h5>
+        <p>{{ response }}</p>
+    </div>
+    {% endif %}
+
+</main>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 700px;">
+
+    <h2 class="fw-bold mb-4">My Profile</h2>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('profile') }}">
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Name</label>
+            <input name="name" type="text" class="form-control" value="{{ user.Name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Street</label>
+            <input name="street" type="text" class="form-control" value="{{ user.Street }}">
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">City</label>
+                <input name="city" type="text" class="form-control" value="{{ user.City }}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">State</label>
+                <input name="state" type="text" class="form-control" value="{{ user.State }}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">Zip Code</label>
+                <input name="zipcode" type="text" class="form-control" value="{{ user.ZipCode }}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Phone</label>
+            <input name="phone" type="text" class="form-control" value="{{ user.Phone }}">
+        </div>
+
+        <button class="btn btn-dark w-100 mt-3">Update Profile</button>
+    </form>
+
+</div>
+{% endblock %}

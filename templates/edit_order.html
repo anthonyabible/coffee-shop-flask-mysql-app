@@ -1,0 +1,47 @@
+{% extends "layouts/base.html" %}
+{% block title %} Edit Order {% endblock %}
+
+{% block content %}
+<main class="container py-4">
+
+    <h2>Edit Order #{{ order.OID }}</h2>
+    <p class="text-muted">Modify quantities and save your changes.</p>
+
+    <form method="POST" action="{{ url_for('update_order', oid=order.OID) }}">
+
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.PName }}</td>
+
+                    <td style="width: 140px;">
+                        <input class="form-control"
+                               type="number"
+                               name="qty_{{ item.PID }}"
+                               min="1"
+                               value="{{ item.Quantity }}">
+                    </td>
+
+                    <td>${{ item.Amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+        <button class="btn btn-success" type="submit">Save Changes</button>
+        <a href="{{ url_for('myorders') }}" class="btn btn-secondary">Cancel</a>
+
+    </form>
+
+</main>
+{% endblock %}

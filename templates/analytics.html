@@ -1,0 +1,174 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Analytics Dashboard{% endblock %}
+
+{% block content %}
+<main class="container py-4">
+
+    <!-- PAGE TITLE -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Analytics Dashboard</h1>
+        <p class="text-muted">Sales metrics and performance insights</p>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h5>Total Orders</h5>
+                <h2 class="fw-bold">{{ total_orders }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h5>Total Revenue</h5>
+                <h2 class="fw-bold">${{ '%.2f'|format(total_revenue) }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center p-3">
+                <h5>Total Items Sold</h5>
+                <h2 class="fw-bold">{{ total_items }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ROW 1: Sales Over Time + Revenue by Category -->
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+                <h5 class="fw-bold">Sales Over Time</h5>
+                <div id="salesByDayChart"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+                <h5 class="fw-bold">Revenue by Category</h5>
+                <div id="revenueByCategoryChart"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ROW 2: Best Sellers + Low Inventory -->
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+                <h5 class="fw-bold">Best-Selling Products</h5>
+                <div id="bestSellersChart"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+                <h5 class="fw-bold">Low Inventory Items</h5>
+                <div id="lowInventoryChart"></div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- FUSIONCHARTS SCRIPTS -->
+<script src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+<script src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
+<script>
+
+// ----------------------------
+// SALES BY DAY (Line Chart)
+// ----------------------------
+FusionCharts.ready(function () {
+    new FusionCharts({
+        type: "line",
+        renderAt: "salesByDayChart",
+        width: "100%",
+        height: "350",
+        dataFormat: "json",
+        dataSource: {
+            chart: {
+                caption: "Daily Revenue",
+                xAxisName: "Date",
+                yAxisName: "Revenue ($)",
+                theme: "fusion",
+            },
+            data: {{ sales_by_day | safe }}
+        }
+    }).render();
+});
+
+// ----------------------------
+// REVENUE BY CATEGORY
+// ----------------------------
+FusionCharts.ready(function () {
+    new FusionCharts({
+        type: "column2d",
+        renderAt: "revenueByCategoryChart",
+        width: "100%",
+        height: "350",
+        dataFormat: "json",
+        dataSource: {
+            chart: {
+                caption: "Revenue by Category",
+                xAxisName: "Category",
+                yAxisName: "Revenue ($)",
+                theme: "fusion"
+            },
+            data: {{ revenue_by_category | safe }}
+        }
+    }).render();
+});
+
+// ----------------------------
+// BEST SELLERS
+// ----------------------------
+FusionCharts.ready(function () {
+    new FusionCharts({
+        type: "bar2d",
+        renderAt: "bestSellersChart",
+        width: "100%",
+        height: "350",
+        dataFormat: "json",
+        dataSource: {
+            chart: {
+                caption: "Top 5 Best Sellers",
+                xAxisName: "Units Sold",
+                theme: "fusion"
+            },
+            data: {{ best_sellers | safe }}
+        }
+    }).render();
+});
+
+// ----------------------------
+// LOW INVENTORY
+// ----------------------------
+FusionCharts.ready(function () {
+    new FusionCharts({
+        type: "bar2d",
+        renderAt: "lowInventoryChart",
+        width: "100%",
+        height: "350",
+        dataFormat: "json",
+        dataSource: {
+            chart: {
+                caption: "Low Inventory Items",
+                xAxisName: "Remaining Quantity",
+                theme: "fusion"
+            },
+            data: {{ low_inventory | safe }}
+        }
+    }).render();
+});
+
+</script>
+
+{% endblock %}

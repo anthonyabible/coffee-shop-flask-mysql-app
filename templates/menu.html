@@ -1,0 +1,201 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Menu {% endblock title %}
+
+{% block content %}
+<main>
+    <div class="container py-4">
+
+        <h1 class="mb-3">Our Menu</h1>
+        <p class="text-muted">Browse our coffee, tea, and specialty drink offerings.</p>
+
+        <!-- TABS -->
+        <ul class="nav nav-tabs mb-4" id="menuTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="coffee-tab" data-bs-toggle="tab" 
+                        data-bs-target="#coffee" type="button" role="tab">
+                    Coffee
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tea-tab" data-bs-toggle="tab" 
+                        data-bs-target="#tea" type="button" role="tab">
+                    Tea
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="specialty-tab" data-bs-toggle="tab" 
+                        data-bs-target="#specialty" type="button" role="tab">
+                    Specialty
+                </button>
+            </li>
+        </ul>
+
+        <div class="row">
+            <div class="col-lg-9">
+
+                <!-- TAB CONTENT -->
+                <div class="tab-content">
+
+                    <!-- COFFEE TAB -->
+                    <div class="tab-pane fade show active" id="coffee" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                            {% for p in products if p.PCategory in coffee_categories %}
+                            <div class="col">
+                                <div class="card h-100 shadow-sm">
+
+                                    {# -------- IMAGE FILENAME LOGIC -------- #}
+                                    {% set filename = (p.PName|lower|replace(' ', '') ~ '.jpg') %}
+
+                                    {% if p.PName == 'Assam Black Tea' %}
+                                        {% set filename = 'assam.jpg' %}
+                                    {% elif p.PName == 'Italian Soda' %}
+                                        {% set filename = 'italian-soda-image.jpg' %}
+                                    {% elif 'Candy Cane Mocha' in p.PName %}
+                                        {% set filename = 'candycanemocha.jpg' %}
+                                    {% endif %}
+
+                                    <img src="{{ url_for('static', filename='img/' ~ filename) }}"
+                                         class="card-img-top" alt="{{ p.PName }}">
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ p.PName }}</h5>
+                                        <p class="text-muted">{{ p.PDescription }}</p>
+                                        <p class="fw-bold">${{ p.UnitPrice }}</p>
+
+                                        <form action="{{ url_for('add_to_cart') }}" method="POST">
+                                            <input type="hidden" name="pid" value="{{ p.PID }}">
+                                            <label class="form-label">Quantity</label>
+                                            <input type="number" class="form-control mb-2" name="qty" value="1" min="1">
+
+                                            <button class="btn btn-primary w-100">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <!-- TEA TAB -->
+                    <div class="tab-pane fade" id="tea" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                            {% for p in products if p.PCategory in tea_categories %}
+                            <div class="col">
+                                <div class="card h-100 shadow-sm">
+
+                                    {# -------- IMAGE FILENAME LOGIC -------- #}
+                                    {% set filename = (p.PName|lower|replace(' ', '') ~ '.jpg') %}
+
+                                    {% if p.PName == 'Assam Black Tea' %}
+                                        {% set filename = 'assam.jpg' %}
+                                    {% elif p.PName == 'Italian Soda' %}
+                                        {% set filename = 'italian-soda-image.jpg' %}
+                                    {% elif 'Candy Cane Mocha' in p.PName %}
+                                        {% set filename = 'candycanemocha.jpg' %}
+                                    {% endif %}
+
+                                    <img src="{{ url_for('static', filename='img/' ~ filename) }}"
+                                         class="card-img-top" alt="{{ p.PName }}">
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ p.PName }}</h5>
+                                        <p class="text-muted">{{ p.PDescription }}</p>
+                                        <p class="fw-bold">${{ p.UnitPrice }}</p>
+
+                                        <form action="{{ url_for('add_to_cart') }}" method="POST">
+                                            <input type="hidden" name="pid" value="{{ p.PID }}">
+                                            <label class="form-label">Quantity</label>
+                                            <input type="number" class="form-control mb-2" name="qty" value="1" min="1">
+                                            <button class="btn btn-primary w-100">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    <!-- SPECIALTY TAB -->
+                    <div class="tab-pane fade" id="specialty" role="tabpanel">
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                            {% for p in products if p.PCategory in specialty_categories %}
+                            <div class="col">
+                                <div class="card h-100 shadow-sm">
+
+                                    {# -------- IMAGE FILENAME LOGIC -------- #}
+                                    {% set filename = (p.PName|lower|replace(' ', '') ~ '.jpg') %}
+
+                                    {% if p.PName == 'Assam Black Tea' %}
+                                        {% set filename = 'assam.jpg' %}
+                                    {% elif p.PName == 'Italian Soda' %}
+                                        {% set filename = 'italian-soda-image.jpg' %}
+                                    {% elif 'Candy Cane Mocha' in p.PName %}
+                                        {% set filename = 'candycanemocha.jpg' %}
+                                    {% endif %}
+
+                                    <img src="{{ url_for('static', filename='img/' ~ filename) }}"
+                                         class="card-img-top" alt="{{ p.PName }}">
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ p.PName }}</h5>
+                                        <p class="text-muted">{{ p.PDescription }}</p>
+                                        <p class="fw-bold">${{ p.UnitPrice }}</p>
+
+                                        <form action="{{ url_for('add_to_cart') }}" method="POST">
+                                            <input type="hidden" name="pid" value="{{ p.PID }}">
+                                            <label class="form-label">Quantity</label>
+                                            <input type="number" class="form-control mb-2" name="qty" value="1" min="1">
+                                            <button class="btn btn-primary w-100">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- CART SIDEBAR -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm">
+                    <h4 class="card-header">Your Cart</h4>
+                    <ul class="list-group list-group-flush">
+
+                        {% if session.cart %}
+                            {% for item in session.cart %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>{{ item.name }} (x{{ item.qty }})</span>
+                                <span>${{ item.total }}</span>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item text-muted">Your cart is empty</li>
+                        {% endif %}
+
+                    </ul>
+
+                    <div class="card-body">
+                        {% if session.cart %}
+                        <p class="fw-bold">Subtotal: ${{ session.subtotal }}</p>
+                        <a href="{{ url_for('checkout') }}" class="btn btn-primary w-100">Checkout</a>
+                        {% else %}
+                        <button class="btn btn-secondary w-100" disabled>Checkout</button>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock content %}

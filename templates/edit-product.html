@@ -1,0 +1,62 @@
+{% extends "layouts/base.html" %}
+{% block title %}Edit Product{% endblock %}
+
+{% block content %}
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-light">
+                    <h4 class="mb-0">Edit Product</h4>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Product Name</label>
+                            <input class="form-control" name="product_name" value="{{ product.PName }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Category</label>
+                            <select class="form-select" name="category" required>
+                                <option selected>{{ product.PCategory }}</option>
+                                <option>Coffee</option>
+                                <option>Tea</option>
+                                <option>Beans</option>
+                                <option>Pastry</option>
+                                <option>Merchandise</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Price ($)</label>
+                            <input class="form-control" name="price" value="{{ product.UnitPrice }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Quantity</label>
+                            <input class="form-control" name="quantity" value="{{ product.Quantity }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea class="form-control" name="description" rows="3">{{ product.PDescription }}</textarea>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-dark btn-lg">Update Product</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

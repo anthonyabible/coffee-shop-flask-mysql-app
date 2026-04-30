@@ -1,0 +1,152 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Checkout {% endblock title %}
+
+{% block content %}
+
+<main class="container py-4">
+
+    <h1 class="mb-4">Checkout</h1>
+
+    <!-- CART SUMMARY -->
+    <div class="card shadow-sm mb-4">
+        <h4 class="card-header">Your Cart</h4>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.qty }}</td>
+                            <td>${{ item.price }}</td>
+                            <td>${{ item.total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="text-end mt-3">Subtotal: <strong>${{ subtotal }}</strong></h5>
+        </div>
+    </div>
+
+    <!-- CUSTOMER INFO + PAYMENT -->
+    <form method="POST" action="{{ url_for('process_checkout') }}">
+
+        <!-- CUSTOMER DETAILS -->
+        <div class="card shadow-sm mb-4">
+            <h4 class="card-header">Customer Details</h4>
+            <div class="card-body">
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Full Name</span>
+                    <input class="form-control" type="text" name="customer_name" required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Email</span>
+                    <input class="form-control" type="email" name="customer_email" required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Pickup / Delivery</span>
+                    <select class="form-select" name="pickup_or_delivery" required>
+                        <option value="Pickup">Pickup</option>
+                        <option value="Delivery">Delivery</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="card shadow-sm mb-3">
+            <h4 class="card-header">Payment</h4>
+
+            <div class="card-body">
+
+                <!-- CARD NUMBER -->
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Card Number</span>
+                    <input class="form-control"
+                           type="text"
+                           name="card_number"
+                           id="card_number"
+                           maxlength="19"
+                           placeholder="1234 5678 9012 3456"
+                           required
+                           oninput="formatCardNumber(this)">
+                </div>
+
+                <div class="row">
+
+                    <!-- EXPIRY -->
+                    <div class="col-6 mb-3">
+                        <label class="form-label">Expiry (MM/YY)</label>
+                        <input class="form-control"
+                               type="text"
+                               name="exp"
+                               id="exp"
+                               maxlength="5"
+                               placeholder="07/26"
+                               required
+                               oninput="formatExpiry(this)">
+                    </div>
+
+                    <!-- CVV -->
+                    <div class="col-6 mb-3">
+                        <label class="form-label">CVV</label>
+                        <input class="form-control"
+                               type="text"
+                               name="cvv"
+                               maxlength="3"
+                               placeholder="123"
+                               required
+                               oninput="this.value = this.value.replace(/\\D/g,'').substring(0,3)">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="btn btn-success w-100 mt-2" type="submit">
+                Confirm & Pay
+            </button>
+        </div>
+
+    </form>
+
+</main>
+
+<!-- CREDIT CARD + EXPIRY FORMAT SCRIPTS -->
+<script>
+/* AUTO FORMAT CREDIT CARD NUMBER */
+function formatCardNumber(input) {
+    let value = input.value.replace(/\D/g, "");  
+    value = value.slice(0, 16);                  
+    let formatted = value.replace(/(.{4})/g, "$1 "); 
+    input.value = formatted.trim();
+}
+
+/* AUTO FORMAT EXPIRY DATE MM/YY */
+function formatExpiry(input) {
+    let value = input.value.replace(/[^0-9]/g, ""); 
+    if (value.length >= 3) {
+        value = value.slice(0, 4);
+        input.value = value.substring(0, 2) + "/" + value.substring(2);
+    } else {
+        input.value = value;
+    }
+}
+</script>
+
+{% endblock content %}
