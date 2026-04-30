@@ -44,9 +44,9 @@ The app supports product listing, product searching, adding products, editing pr
 
 - `app.py` - Main Flask application file
 - `requirements.txt` - Python package requirements
-- `templates/` - HTML templates used by the Flask app, if included
-- `static/` - CSS, images, and static files, if included
-- `.env.example` - Example environment variable setup, if included
+- `templates/` - HTML templates used by the Flask app
+- `static/` - CSS, images, JavaScript, and static assets
+- `.env.example` - Example environment variable setup
 
 ## Security Note
 
